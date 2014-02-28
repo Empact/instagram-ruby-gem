@@ -20,8 +20,8 @@ module FaradayMiddleware
           env[:url].query = Faraday::Utils.build_query(query.merge(:client_id => @client_id))
         end
       else
+        env[:body] = {} if env[:body].nil?
         if @access_token and not env[:body] && env[:body][:client_secret]
-          env[:body] = {} if env[:body].nil?
           env[:body] = env[:body].merge(:access_token => @access_token)
           env[:request_headers] = env[:request_headers].merge('Authorization' => "Token token=\"#{@access_token}\"")
         elsif @client_id
